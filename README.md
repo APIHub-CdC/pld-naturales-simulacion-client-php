@@ -1,6 +1,6 @@
-# telcos-simulacion-client-php
+# pld-naturales-simulacion-client-php
 
-Presenta los creditos de la persona con servicios con domicilio asociado de: telefonía celular; televisión de paga; y, telefonía local y de larga distancia (entorno de simulación).
+Devuelve las coinicidencias de las personas que se encuentran en listas nacionales e internacionales de Prevención de Lavado de Dinero (entorno de simulación).
 
 ## Requisitos
 
@@ -43,7 +43,7 @@ Al iniciar sesión seguir os siguientes pasos:
 
 ### Paso 2. Capturar los datos de la petición
 
-Los siguientes datos a modificar se encuentran en ***test/Api/TelcosSimulacionApiTest.php***
+Los siguientes datos a modificar se encuentran en ***test/Api/ApiTest.php***
 
 Es importante contar con el setUp() que se encargará de inicializar la url. Modificar la URL ***('the_url')*** de la petición del objeto ***$config***, como se muestra en el siguiente fragmento de código:
 
@@ -52,68 +52,39 @@ Es importante contar con el setUp() que se encargará de inicializar la url. Mod
 public function setUp()
 {
     $handler = \GuzzleHttp\HandlerStack::create();
-    $config = new \TelcosSimulacion\Client\Configuration();
+    $config = new \PLDNaturalesSimulacion\Client\Configuration();
     $config->setHost('the_url');
 
     $client = new \GuzzleHttp\Client(['handler' => $handler, 'verify' => false]);
-    $this->apiInstance = new \TelcosSimulacion\Client\Api\TelcosSimulacionApi($client,$config);
-}  
+    $this->apiInstance = new \PLDNaturalesSimulacion\Client\Api\PLDNaturalesSimulacionApi($client,$config);
+} 
 ```
 ```php
 
 <?php
 /**
-* Este es el método que se será ejecutado en la prueba ubicado en path/to/repository/test/Api/TelcosSimulacionApiTest.php 
+* Este es el método que se será ejecutado en la prueba ubicado en path/to/repository/test/Api/ApiTest.php 
 
 */
-public function testGetReporte()
+public function testPldNaturales()
 {
     $x_api_key = "your_api_key";
 
-    $requestDomicilio = new \TelcosSimulacion\Client\Model\DomicilioPeticion();
-    $requestEstado = new \TelcosSimulacion\Client\Model\CatalogoEstados();
-    $requestTipoDom = new \TelcosSimulacion\Client\Model\CatalogoTipoDomicilio();
-    $requestTipoAsent = new \TelcosSimulacion\Client\Model\CatalogoTipoAsentamiento();
-
-    $requestDomicilio->setDireccion(null);
-    $requestDomicilio->setColonia(null);
-    $requestDomicilio->setMunicipio(null);
-    $requestDomicilio->setCiudad(null);
-    $requestDomicilio->setEstado($requestEstado::CDMX);
-    $requestDomicilio->setCodigoPostal(null);
-    $requestDomicilio->setFechaResidencia(null);
-    $requestDomicilio->setNumeroTelefono(null);
-    $requestDomicilio->setTipoDomicilio($requestTipoDom::O);
-    $requestDomicilio->setTipoAsentamiento($requestTipoAsent::_0);
-
-    $requestPersona = new \TelcosSimulacion\Client\Model\PersonaPeticion();
-    $requestResidencia = new \TelcosSimulacion\Client\Model\CatalogoResidencia();
-    $requestEdoCivil = new \TelcosSimulacion\Client\Model\CatalogoEstadoCivil();
-    $requestSexo = new \TelcosSimulacion\Client\Model\CatalogoSexo();
+    $request = new \PLDNaturalesSimulacion\Client\Model\Peticion();
     
-    $requestPersona->setPrimerNombre("NOMBRE");
-    $requestPersona->setSegundoNombre(null);
-    $requestPersona->setApellidoPaterno("PATERNO");
-    $requestPersona->setApellidoMaterno("MATERNO");
-    $requestPersona->setApellidoAdicional(null);
-    $requestPersona->setFechaNacimiento("27-06-1986");
-    $requestPersona->setRfc(null);
-    $requestPersona->setCurp(null);
-    $requestPersona->setNumeroSeguridadSocial(null);
-    $requestPersona->setNacionalidad(null);
-    $requestPersona->setResidencia($requestResidencia::_1);
-    $requestPersona->setEstadoCivil($requestEdoCivil::S);
-    $requestPersona->setSexo($requestSexo::M);
-    $requestPersona->setClaveElector(null);
-    $requestPersona->setNumeroDependientes(null);
-    $requestPersona->setFechaDefuncion(null);
-    $requestPersona->setDomicilio($requestDomicilio);        
+    $request->setFolioOtorgante("000008");
+    $request->setTipoDocumento("01");
+    $request->setNumeroDocumento("01");
+    $request->setNombre("Maria");
+    $request->setSegundoNombre(null);
+    $request->setApellidoPaterno("Sanchez");
+    $request->setApellidoMaterno("Mathews");
 
     try {
-        $result = $this->apiInstance->getReporte($x_api_key, $requestPersona);
+        $result = $this->apiInstance->pld($x_api_key, $request);
         print_r($result);
     } catch (Exception $e) {
-        echo 'Exception when calling TelcosSimulacionApi->getReporte: ', $e->getMessage(), PHP_EOL;
+        echo 'Exception when calling ApiTest->pld: ', $e->getMessage(), PHP_EOL;
     }
 }
 ?>
