@@ -72,7 +72,7 @@ public function testPldNaturales()
 
     $request = new \PLDNaturalesSimulacion\Client\Model\Peticion();
     
-    $request->setFolioOtorgante("000008");
+    $request->setFolio("000008");
     $request->setTipoDocumento("01");
     $request->setNumeroDocumento("01");
     $request->setNombre("Maria");
